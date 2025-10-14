@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Brijesh Pal | Unity Game Developer</title>
+  <meta name="description" content="Portfolio of Brijesh Pal, Unity Game Developer specializing in 3D mobile games">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary-color: #f9a825;
+      --dark-bg: #0d0d0d;
+      --card-bg: linear-gradient(145deg, #1c1c1c, #2a2a2a);
+      --text-color: #fff;
+      --border-color: #333;
+      --nav-bg: #111;
+      --footer-bg: #111;
+    }
+    
+    /* Light Mode Variables */
+    [data-theme="light"] {
+      --primary-color: #f57c00;
+      --dark-bg: #f5f5f5;
+      --card-bg: linear-gradient(145deg, #ffffff, #e0e0e0);
+      --text-color: #333;
+      --border-color: #ddd;
+      --nav-bg: #fff;
+      --footer-bg: #f0f0f0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
+    }
+    
+    /* Enhanced Fixed Custom Cursor */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      transition: width 0.2s, height 0.2s, transform 0.2s;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+    }
+    
+    .cursor-outline {
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--primary-color);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, width 0.2s, height 0.2s;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+    }
+    
+    .cursor-dot.hover {
+      width: 12px;
+      height: 12px;
+      background: #ff4081;
+    }
+    
+    .cursor-outline.hover {
+      transform: translate(-50%, -50%) scale(1.5);
+      border-color: #ff4081;
+    }
+    
+    .cursor-dot.click {
+      transform: translate(-50%, -50%) scale(0.8);
+      background: #00ff88;
+    }
+    
+    .cursor-outline.click {
+      transform: translate(-50%, -50%) scale(0.8);
+      border-color: #00ff88;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      width: 60px;
+      height: 30px;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .toggle-slider {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 4px;
+      top: 4px;
+    }
+    
+    [data-theme="light"] .toggle-slider {
+      left: calc(100% - 26px);
+      background: #ff9800;
+    }
+
+    .toggle-icon {
+      font-size: 16px;
+      color: white;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    .sun-icon {
+      opacity: 0;
+    }
+
+    .moon-icon {
+      opacity: 1;
+    }
+
+    [data-theme="light"] .sun-icon {
+      opacity: 1;
+    }
+
+    [data-theme="light"] .moon-icon {
+      opacity: 0;
+    }
+
+    /* Animated Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--nav-bg);
+      z-index: 1000;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background-color 0.5s ease, box-shadow 0.5s ease;
+      transform: translateY(0);
+      transition: transform 0.3s ease, background-color 0.5s ease;
+    }
+    
+    nav.hidden {
+      transform: translateY(-100%);
+    }
+    
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    nav .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+    
+    nav .logo:hover::after {
+      width: 100%;
+    }
+    
+    nav .logo i {
+      font-size: 1.5rem;
+    }
+    nav ul {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    nav ul li a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 6px 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      cursor: none;
+      overflow: hidden;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: var(--primary-color);
+      transition: width 0.3s;
+    }
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 100%;
+    }
+    nav ul li a:hover, nav ul li a.active {
+      color: var(--primary-color);
+    }
+
+    section {
+      padding: 100px 20px;
+      border-top: 1px solid var(--border-color);
+      max-width: 1200px;
+      margin: 0 auto;
+      scroll-margin-top: 80px;
+      transition: border-color 0.5s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 40px;
+      transition: color 0.5s ease;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -10px;
+      left: 0;
+      background: var(--primary-color);
+      transition: width 0.5s ease;
+    }
+    
+    .section-title.animate::after {
+      width: 100%;
+    }
+    
+    .section-title span { 
+      color: var(--primary-color); 
+      display: inline-block;
+    }
+
+    /* Enhanced Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding-top: 140px;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(249, 168, 37, 0.1) 0%, transparent 70%);
+      animation: pulse 8s infinite alternate;
+      z-index: -1;
+    }
+    
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1.2); }
+    }
+    
+    .hero-img {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: translateX(-50px);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+    }
+    
+    .hero-img.animate {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .hero-img img {
+      width: 300px;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 4px solid var(--primary-color);
+      box-shadow: 0 10px 30px rgba(249, 168, 37, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.5s ease;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-img::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--primary-color);
+      border-radius: 20px;
+      z-index: 1;
+      animation: rotate 10s linear infinite;
+      opacity: 0.5;
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg) scale(1.05); }
+      100% { transform: rotate(360deg) scale(1.05); }
+    }
+    
+    .hero-img img:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(249, 168, 37, 0.4);
+    }
+    
+    .hero-content {
+      max-width: 600px;
+      transform: translateX(50px);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+    }
+    
+    .hero-content.animate {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    .hero-content h1 {
+      font-size: 2.8rem;
+      color: var(--primary-color);
+      transition: color 0.5s ease;
+      margin-bottom: 10px;
+    }
+    
+    .hero-content h2 {
+      font-size: 1.6rem;
+      margin: 10px 0 20px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .hero-content h2::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background: var(--primary-color);
+      transition: width 0.5s ease;
+    }
+    
+    .hero-content.animate h2::after {
+      width: 100%;
+    }
+    
+    .hero-content p {
+      font-size: 1rem;
+      margin-bottom: 15px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    
+    .hero-content.animate p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .hero-content.animate p:nth-child(3) {
+      transition-delay: 0.2s;
+    }
+    
+    .hero-content.animate p:nth-child(4) {
+      transition-delay: 0.4s;
+    }
+    
+    .btn {
+      background: var(--primary-color);
+      color: black;
+      padding: 12px 25px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: none;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+      z-index: -1;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(249, 168, 37, 0.3);
+    }
+    
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .about-container {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr;
+      gap: 30px;
+      align-items: start;
+      padding: 20px 0;
+    }
+    
+    .personal-info p {
+      font-size: 16px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    
+    .about-container.animate .personal-info p {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .about-container.animate .personal-info p:nth-child(1) { transition-delay: 0.1s; }
+    .about-container.animate .personal-info p:nth-child(2) { transition-delay: 0.2s; }
+    .about-container.animate .personal-info p:nth-child(3) { transition-delay: 0.3s; }
+    .about-container.animate .personal-info p:nth-child(4) { transition-delay: 0.4s; }
+    .about-container.animate .personal-info p:nth-child(5) { transition-delay: 0.5s; }
+    .about-container.animate .personal-info p:nth-child(6) { transition-delay: 0.6s; }
+    
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .stat-box {
+      background: var(--card-bg);
+      color: var(--primary-color);
+      padding: 25px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      position: relative;
+      clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
+      transition: transform 0.3s ease, border-color 0.3s ease, background 0.5s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .about-container.animate .stat-box {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .about-container.animate .stat-box:nth-child(1) { transition-delay: 0.3s; }
+    .about-container.animate .stat-box:nth-child(2) { transition-delay: 0.5s; }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary-color);
+      box-shadow: 0 10px 20px rgba(249, 168, 37, 0.2);
+    }
+    
+    .stat-number {
+      font-size: 32px;
+      font-weight: bold;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-color);
+      display: block;
+      margin-top: 8px;
+    }
+    
+    .download-cv {
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    
+    .about-container.animate .download-cv {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.7s;
+    }
+    
+    .download-cv a {
+      display: inline-block;
+      background: var(--primary-color);
+      color: #000;
+      padding: 15px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      transition: 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .download-cv a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    .download-cv a:hover::before {
+      left: 100%;
+    }
+    
+    .download-cv a:hover {
+      background-color: #ffc107;
+      transform: translateY(-2px);
+    }
+
+    /* Enhanced Portfolio Styles */
+    .portfolio-container {
+      position: relative;
+      overflow: hidden;
+      padding: 0 50px;
+    }
+    
+    .portfolio-scroll {
+      display: flex;
+      gap: 25px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 20px 0;
+    }
+    
+    .portfolio-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .portfolio-item {
+      min-width: 350px;
+      max-width: 350px;
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 25px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, border-color 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    #portfolio.animate .portfolio-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    #portfolio.animate .portfolio-item:nth-child(1) { transition-delay: 0.1s; }
+    #portfolio.animate .portfolio-item:nth-child(2) { transition-delay: 0.2s; }
+    #portfolio.animate .portfolio-item:nth-child(3) { transition-delay: 0.3s; }
+    #portfolio.animate .portfolio-item:nth-child(4) { transition-delay: 0.4s; }
+    #portfolio.animate .portfolio-item:nth-child(5) { transition-delay: 0.5s; }
+    #portfolio.animate .portfolio-item:nth-child(6) { transition-delay: 0.6s; }
+    
+    .portfolio-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(249, 168, 37, 0.2);
+      border-color: var(--primary-color);
+    }
+    
+    .portfolio-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(249, 168, 37, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .portfolio-item:hover::before {
+      left: 100%;
+    }
+    
+    .portfolio-item h3 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .portfolio-item p {
+      margin-bottom: 15px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+    
+    [data-theme="light"] .portfolio-item p {
+      color: #666;
+    }
+    
+    .video-container {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 15px;
+      background: #000;
+    }
+    
+    video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+    
+    .portfolio-item:hover video {
+      transform: scale(1.05);
+    }
+    
+    /* YouTube Video Container */
+    .youtube-container {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%;
+      margin-top: 15px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .youtube-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    
+    .portfolio-item:hover .youtube-container iframe {
+      transform: scale(1.05);
+    }
+    
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(249, 168, 37, 0.9);
+      color: #000;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      z-index: 10;
+      opacity: 0;
+    }
+    
+    #portfolio.animate .nav-arrow {
+      opacity: 1;
+    }
+    
+    .nav-arrow:hover {
+      background: var(--primary-color);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 5px 15px rgba(249, 168, 37, 0.4);
+    }
+    
+    .nav-arrow.left {
+      left: 10px;
+    }
+    
+    .nav-arrow.right {
+      right: 10px;
+    }
+    
+    /* Scroll Indicator */
+    .scroll-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      opacity: 0;
+    }
+    
+    #portfolio.animate .scroll-indicator {
+      opacity: 1;
+      transition-delay: 0.7s;
+    }
+    
+    .scroll-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #333;
+      cursor: none;
+      transition: all 0.3s ease;
+    }
+    
+    [data-theme="light"] .scroll-dot {
+      background: #ddd;
+    }
+    
+    .scroll-dot.active {
+      background: var(--primary-color);
+      transform: scale(1.2);
+    }
+    
+    /* Project Tags */
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      background: rgba(249, 168, 37, 0.2);
+      color: var(--primary-color);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(249, 168, 37, 0.3);
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    /* Contact Section */
+    .contact-info {
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    #contact.animate .contact-info {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+    
+    .contact-info ul {
+      list-style: none;
+    }
+    
+    .contact-info ul li {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    
+    #contact.animate .contact-info ul li {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    #contact.animate .contact-info ul li:nth-child(1) { transition-delay: 0.3s; }
+    #contact.animate .contact-info ul li:nth-child(2) { transition-delay: 0.4s; }
+    #contact.animate .contact-info ul li:nth-child(3) { transition-delay: 0.5s; }
+    
+    .contact-info ul li i {
+      color: var(--primary-color);
+      width: 20px;
+    }
+    
+    .contact-form {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    #contact.animate .contact-form {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.6s;
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+    }
+    
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(249, 168, 37, 0.2);
+    }
+    
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.8rem;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+    
+    .form-submitted {
+      background: rgba(249, 168, 37, 0.1);
+      border: 1px solid var(--primary-color);
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--footer-bg);
+      color: #aaa;
+      transition: background-color 0.5s ease;
+    }
+    
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: var(--text-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Enhanced Fun Elements */
+    
+    /* Easter Egg Button */
+    .easter-egg {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--primary-color);
+      color: black;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      cursor: none;
+      z-index: 100;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .easter-egg:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      animation: none;
+    }
+    
+    /* Fixed Floating Emojis */
+    .emoji {
+      position: fixed;
+      font-size: 24px;
+      z-index: 9999;
+      pointer-events: none;
+      animation: floatUp 3s ease-in forwards;
+      text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Game Developer Joke */
+    .joke-container {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      cursor: none;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    
+    .hero-content.animate .joke-container {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.6s;
+    }
+    
+    .joke-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(249, 168, 37, 0.2);
+    }
+    
+    .joke-question {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .joke-answer {
+      display: none;
+      margin-top: 10px;
+      color: var(--text-color);
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Achievement Toast */
+    .achievement-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border-left: 4px solid var(--primary-color);
+      padding: 15px;
+      border-radius: 8px;
+      transform: translateX(120%);
+      transition: transform 0.5s ease;
+      z-index: 1000;
+      max-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .achievement-toast.show {
+      transform: translateX(0);
+    }
+    
+    .achievement-title {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .achievement-desc {
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+    
+    /* Interactive Background */
+    .interactive-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .bg-element {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      opacity: 0.2;
+    }
+    
+    /* Particle Effects */
+    .particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: var(--primary-color);
+      border-radius: 50%;
+      opacity: 0;
+    }
+    
+    /* Scroll Progress Bar */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--primary-color);
+      z-index: 1001;
+      transition: width 0.1s ease;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .portfolio-container {
+        padding: 0 20px;
+      }
+      
+      .portfolio-item {
+        min-width: 280px;
+        max-width: 280px;
+      }
+      
+      .nav-arrow {
+        display: none;
+      }
+      
+      .about-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        padding: 120px 20px 80px;
+      }
+      
+      .hero-img img {
+        width: 250px;
+        height: 300px;
+      }
+      
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero-content h2 {
+        font-size: 1.4rem;
+      }
+      
+      .hero-content p {
+        font-size: 0.95rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      section {
+        padding: 80px 15px;
+      }
+      
+      nav {
+        padding: 1rem;
+      }
+      
+      nav ul {
+        gap: 15px;
+      }
+      
+      nav ul li a {
+        font-size: 0.9rem;
+      }
+      
+      .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 50px;
+        height: 25px;
+      }
+      
+      .toggle-slider {
+        width: 19px;
+        height: 19px;
+      }
+      
+      [data-theme="light"] .toggle-slider {
+        left: calc(100% - 23px);
+      }
+      
+      .easter-egg {
+        bottom: 10px;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
+      /* Hide custom cursor on mobile */
+      .cursor-dot, .cursor-outline {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-img img {
+        width: 200px;
+        height: 250px;
+      }
+      
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      
+      .hero-content h2 {
+        font-size: 1.2rem;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .portfolio-item {
+        min-width: 260px;
+        max-width: 260px;
+        padding: 20px;
+      }
+      
+      nav ul {
+        gap: 10px;
+      }
+      
+      nav ul li a {
+        padding: 4px 8px;
+        font-size: 0.85rem;
+      }
+      
+      .theme-toggle {
+        top: 10px;
+        right: 10px;
+      }
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+  
+  <!-- Fixed Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+  
+  <!-- Particle Effects -->
+  <div class="particles-container" id="particlesContainer"></div>
+  
+  <!-- Fun Elements -->
+  <button class="easter-egg" id="easterEgg" title="Click for a surprise!">🎮</button>
+  <div class="interactive-bg" id="interactiveBg"></div>
+  
+  <!-- Achievement Toast -->
+  <div class="achievement-toast" id="achievementToast">
+    <div class="achievement-title" id="achievementTitle">Achievement Unlocked!</div>
+    <div class="achievement-desc" id="achievementDesc">Description of achievement</div>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <div class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+    <div class="toggle-slider">
+      <i class="fas fa-sun toggle-icon sun-icon"></i>
+      <i class="fas fa-moon toggle-icon moon-icon"></i>
+    </div>
+  </div>
+  
+  <nav id="mainNav">
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-gamepad" aria-hidden="true"></i>
+        Brijesh Pal
+      </div>
+      <ul>
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&h=400&q=80" alt="Brijesh Pal - Unity Game Developer">
+    </div>
+    <div class="hero-content">
+      <h1>I'm Brijesh Pal</h1>
+      <h2>Unity Game Developer</h2>
+      <p>I'm a passionate game developer with a strong creative vision and a love for bringing ideas to life through interactive 3D experiences. I specialize in 3D mobile game development using Unity.</p>
+      <p>My strength lies in game design, visual storytelling, and building unique player experiences.</p>
+      
+      <!-- Developer Joke -->
+      <div class="joke-container" id="devJoke">
+        <div class="joke-question">Click for a game developer joke!</div>
+        <div class="joke-answer" id="jokeAnswer">Why do game developers prefer dark mode?<br>Because light attracts bugs!</div>
+      </div>
+      
+      <a href="#about" class="btn">More About Me</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">ABOUT <span>ME</span></h2>
+    <div class="about-container">
+      <div class="personal-info">
+        <p><strong>Name:</strong> Brijesh Pal</p>
+        <p><strong>Age:</strong> 23</p>
+        <p><strong>Location:</strong> Mumbai, India</p>
+        <p><strong>Languages:</strong> English, Hindi, Marathi</p>
+        <p><strong>Email:</strong> palbrijesh2769@gmail.com</p>
+        <p><strong>Phone:</strong> +91 9930516388</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-box"><span class="stat-number">1+</span><span class="stat-label">Year of Experience</span></div>
+        <div class="stat-box"><span class="stat-number">10+</span><span class="stat-label">Projects Completed</span></div>
+      </div>
+      <div class="download-cv">
+        <a href="#" class="btn" onclick="downloadCV()">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2 class="section-title">MY <span>PROJECTS</span></h2>
+    <div class="portfolio-container">
+      <button class="nav-arrow left" id="scrollLeft" aria-label="Scroll portfolio left">‹</button>
+      <div class="portfolio-scroll" id="portfolioScroll">
+        
+        <div class="portfolio-item">
+          <h3>Kart Racing Game</h3>
+          <p>A mobile racing game with realistic kart physics, AI drivers, items, and power-ups. Features multiple tracks and exciting gameplay mechanics.</p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">C#</span>
+            <span class="tag">Mobile</span>
+          </div>
+          <div class="youtube-container">
+            <iframe 
+              src="https://www.youtube.com/embed/z4_1hRBJtFI" 
+              title="Kart Racing Game Demo" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <h3>3D Platformer Adventure</h3>
+          <p>An immersive 3D platformer with stunning visuals, challenging obstacles, and collectible items. Features smooth character controls and dynamic camera system.</p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">3D</span>
+            <span class="tag">Adventure</span>
+          </div>
+          <div class="video-container">
+            <video controls muted poster="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
+              <source src="#" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <h3>Tower Defense Strategy</h3>
+          <p>Strategic tower defense game with multiple enemy types, upgradeable towers, and challenging wave-based gameplay. Includes special abilities and boss battles.</p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">Strategy</span>
+            <span class="tag">Mobile</span>
+          </div>
+          <div class="video-container">
+            <video controls muted poster="https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
+              <source src="#" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <h3>Puzzle Quest</h3>
+          <p>Mind-bending puzzle game with innovative mechanics, beautiful environments, and progressive difficulty. Features over 50 unique levels with different themes.</p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">Puzzle</span>
+            <span class="tag">Logic</span>
+          </div>
+          <div class="video-container">
+            <video controls muted poster="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
+              <source src="#" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <h3>Space Shooter Arena</h3>
+          <p>Fast-paced space combat game with customizable spaceships, weapon upgrades, and multiplayer support. Features stunning particle effects and dynamic backgrounds.</p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">Action</span>
+            <span class="tag">Multiplayer</span>
+          </div>
+          <div class="video-container">
+            <video controls muted poster="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
+              <source src="#" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <h3>AR Treasure Hunt</h3>
+          <p>Augmented reality mobile game that blends real-world exploration with digital treasure hunting. Uses GPS and camera for immersive gameplay experience.</p>
+          <div class="project-tags">
+            <span class="tag">Unity</span>
+            <span class="tag">AR</span>
+            <span class="tag">Mobile</span>
+          </div>
+          <div class="video-container">
+            <video controls muted poster="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80">
+              <source src="#" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+
+      </div>
+      <button class="nav-arrow right" id="scrollRight" aria-label="Scroll portfolio right">›</button>
+    </div>
+    
+    <div class="scroll-indicator" id="scrollIndicator">
+      <div class="scroll-dot active" data-index="0"></div>
+      <div class="scroll-dot" data-index="1"></div>
+      <div class="scroll-dot" data-index="2"></div>
+      <div class="scroll-dot" data-index="3"></div>
+      <div class="scroll-dot" data-index="4"></div>
+      <div class="scroll-dot" data-index="5"></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">GET IN <span>TOUCH</span></h2>
+    <div class="contact-info">
+      <ul>
+        <li><i class="fas fa-map-marker-alt"></i> Mumbai, India</li>
+        <li><i class="fas fa-envelope"></i> palbrijesh2769@gmail.com</li>
+        <li><i class="fas fa-phone"></i> +91 9930516388</li>
+      </ul>
+    </div>
+    <form class="contact-form" id="contactForm">
+      <div class="form-group">
+        <input type="text" placeholder="Your Name" required id="name" />
+        <div class="error-message" id="nameError">Please enter your name</div>
+      </div>
+      <div class="form-group">
+        <input type="email" placeholder="Your Email" required id="email" />
+        <div class="error-message" id="emailError">Please enter a valid email</div>
+      </div>
+      <div class="form-group">
+        <input type="text" placeholder="Subject" id="subject" />
+      </div>
+      <div class="form-group">
+        <textarea placeholder="Your Message" rows="5" required id="message"></textarea>
+        <div class="error-message" id="messageError">Please enter your message</div>
+      </div>
+      <button type="submit" class="btn" id="submitBtn">Send Message</button>
+      <div class="form-submitted" id="formSubmitted">
+        <p>Thank you for your message! I will get back to you soon.</p>
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Brijesh Pal. All rights reserved.</p>
+  </footer>
+
+<script>
+  // Enhanced Custom Cursor with precise positioning
+  const cursorDot = document.querySelector('.cursor-dot');
+  const cursorOutline = document.querySelector('.cursor-outline');
+  
+  document.addEventListener('mousemove', (e) => {
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    
+    cursorOutline.style.left = e.clientX + 'px';
+    cursorOutline.style.top = e.clientY + 'px';
+  });
+  
+  // Cursor interactions
+  document.querySelectorAll('a, button, .btn, .portfolio-item, .nav-arrow, .scroll-dot, .joke-container, .easter-egg, .theme-toggle').forEach(element => {
+    element.addEventListener('mouseenter', () => {
+      cursorDot.classList.add('hover');
+      cursorOutline.classList.add('hover');
+    });
+    
+    element.addEventListener('mouseleave', () => {
+      cursorDot.classList.remove('hover');
+      cursorOutline.classList.remove('hover');
+    });
+  });
+  
+  document.addEventListener('mousedown', () => {
+    cursorDot.classList.add('click');
+    cursorOutline.classList.add('click');
+  });
+  
+  document.addEventListener('mouseup', () => {
+    cursorDot.classList.remove('click');
+    cursorOutline.classList.remove('click');
+  });
+
+  // Theme toggle functionality
+  const themeToggle = document.getElementById('themeToggle');
+  const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  
+  // Check for saved theme preference or use system preference
+  const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  
+  // Toggle theme function
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Show achievement when theme is changed
+    showAchievement('Theme Changer', 'You switched between light and dark mode!');
+  }
+  
+  themeToggle.addEventListener('click', toggleTheme);
+
+  // Enhanced Navigation functionality with hide/show on scroll
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll("nav ul li a");
+  const mainNav = document.getElementById('mainNav');
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener("scroll", () => {
+    // Hide/show nav on scroll
+    if (window.scrollY > lastScrollY && window.scrollY > 100) {
+      mainNav.classList.add('hidden');
+    } else {
+      mainNav.classList.remove('hidden');
+    }
+    lastScrollY = window.scrollY;
+    
+    // Update scroll progress
+    const winHeight = window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.pageYOffset;
+    const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+    document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+    
+    // Section highlighting
+    let current = "";
+
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - 100;
+      if (scrollY >= sectionTop) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href").includes(current)) {
+        link.classList.add("active");
+      }
+    });
+  });
+
+  // Scroll animations
+  function checkScroll() {
+    sections.forEach(section => {
+      const sectionTop = section.getBoundingClientRect().top;
+      const triggerPoint = window.innerHeight * 0.85;
+      
+      if (sectionTop < triggerPoint) {
+        section.classList.add('visible');
+        
+        // Animate section titles
+        const title = section.querySelector('.section-title');
+        if (title && !title.classList.contains('animate')) {
+          title.classList.add('animate');
+        }
+        
+        // Animate hero elements
+        if (section.id === 'home') {
+          const heroImg = document.querySelector('.hero-img');
+          const heroContent = document.querySelector('.hero-content');
+          
+          if (heroImg && !heroImg.classList.contains('animate')) {
+            heroImg.classList.add('animate');
+          }
+          
+          if (heroContent && !heroContent.classList.contains('animate')) {
+            heroContent.classList.add('animate');
+          }
+        }
+        
+        // Animate about elements
+        if (section.id === 'about') {
+          const aboutContainer = document.querySelector('.about-container');
+          if (aboutContainer && !aboutContainer.classList.contains('animate')) {
+            aboutContainer.classList.add('animate');
+          }
+        }
+        
+        // Animate portfolio elements
+        if (section.id === 'portfolio') {
+          const portfolioSection = document.getElementById('portfolio');
+          if (portfolioSection && !portfolioSection.classList.contains('animate')) {
+            portfolioSection.classList.add('animate');
+          }
+        }
+        
+        // Animate contact elements
+        if (section.id === 'contact') {
+          const contactSection = document.getElementById('contact');
+          if (contactSection && !contactSection.classList.contains('animate')) {
+            contactSection.classList.add('animate');
+          }
+        }
+      }
+    });
+  }
+  
+  window.addEventListener('scroll', checkScroll);
+  window.addEventListener('load', checkScroll);
+
+  // Dynamic Portfolio Scroll
+  const portfolioScroll = document.getElementById('portfolioScroll');
+  const scrollLeftBtn = document.getElementById('scrollLeft');
+  const scrollRightBtn = document.getElementById('scrollRight');
+  const scrollDots = document.querySelectorAll('.scroll-dot');
+  const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+  let currentIndex = 0;
+
+  // Calculate item width dynamically
+  function getItemWidth() {
+    const style = getComputedStyle(portfolioItems[0]);
+    const marginRight = parseInt(style.marginRight);
+    return portfolioItems[0].offsetWidth + marginRight;
+  }
+
+  // Scroll to specific item
+  function scrollToItem(index) {
+    const scrollAmount = index * getItemWidth();
+    portfolioScroll.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    updateActiveIndicator(index);
+    currentIndex = index;
+  }
+
+  // Update dot indicators
+  function updateActiveIndicator(index) {
+    scrollDots.forEach(dot => dot.classList.remove('active'));
+    if (scrollDots[index]) scrollDots[index].classList.add('active');
+  }
+
+  // Arrow buttons
+  scrollLeftBtn.addEventListener('click', () => {
+    if (currentIndex > 0) scrollToItem(currentIndex - 1);
+  });
+  scrollRightBtn.addEventListener('click', () => {
+    if (currentIndex < portfolioItems.length - 1) scrollToItem(currentIndex + 1);
+  });
+
+  // Dot navigation
+  scrollDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => scrollToItem(index));
+  });
+
+  // Auto-update dot based on scroll
+  portfolioScroll.addEventListener('scroll', () => {
+    const newIndex = Math.round(portfolioScroll.scrollLeft / getItemWidth());
+    if (newIndex !== currentIndex) {
+      currentIndex = newIndex;
+      updateActiveIndicator(currentIndex);
+    }
+  });
+
+  // Touch/swipe support
+  let startX = 0;
+  let scrollLeftPosition = 0;
+
+  portfolioScroll.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX - portfolioScroll.offsetLeft;
+    scrollLeftPosition = portfolioScroll.scrollLeft;
+  });
+
+  portfolioScroll.addEventListener('touchmove', (e) => {
+    if (!startX) return;
+    const x = e.touches[0].pageX - portfolioScroll.offsetLeft;
+    const walk = (x - startX) * 2; // scroll speed multiplier
+    portfolioScroll.scrollLeft = scrollLeftPosition - walk;
+  });
+
+  portfolioScroll.addEventListener('touchend', () => startX = 0);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' && currentIndex > 0) scrollToItem(currentIndex - 1);
+    if (e.key === 'ArrowRight' && currentIndex < portfolioItems.length - 1) scrollToItem(currentIndex + 1);
+  });
+
+  // Fix video display
+  document.addEventListener('DOMContentLoaded', () => {
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+      // Ensure videos are properly displayed
+      video.style.display = 'block';
+      video.setAttribute('preload', 'metadata');
+    });
+  });
+
+  // Contact form functionality
+  const contactForm = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formSubmitted = document.getElementById('formSubmitted');
+
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Simple validation
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    let isValid = true;
+    
+    // Name validation
+    if (!name) {
+      document.getElementById('nameError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('nameError').style.display = 'none';
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      document.getElementById('emailError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('emailError').style.display = 'none';
+    }
+    
+    // Message validation
+    if (!message) {
+      document.getElementById('messageError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('messageError').style.display = 'none';
+    }
+    
+    if (isValid) {
+      // Show loading state
+      submitBtn.innerHTML = '<span class="loading"></span> Sending...';
+      submitBtn.disabled = true;
+      
+      // Simulate form submission
+      setTimeout(() => {
+        formSubmitted.style.display = 'block';
+        contactForm.reset();
+        submitBtn.innerHTML = 'Send Message';
+        submitBtn.disabled = false;
+        
+        // Show achievement
+        showAchievement('Message Sent!', 'Your message is on its way!');
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          formSubmitted.style.display = 'none';
+        }, 5000);
+      }, 1500);
+    }
+  });
+
+  // CV download function
+  function downloadCV() {
+    // In a real implementation, this would track the download
+    console.log('CV download initiated');
+    showAchievement('CV Downloaded!', 'Hope you like what you see!');
+    return true;
+  }
+
+  // ========== ENHANCED FUN ELEMENTS ==========
+
+  // Easter Egg Button
+  const easterEgg = document.getElementById('easterEgg');
+  let clickCount = 0;
+  
+  easterEgg.addEventListener('click', function() {
+    clickCount++;
+    
+    // Create floating emojis with better positioning
+    createFloatingEmojis(5, easterEgg.getBoundingClientRect());
+    
+    // Create particle explosion
+    createParticleExplosion(easterEgg.getBoundingClientRect());
+    
+    if (clickCount === 3) {
+      // Show achievement on third click
+      showAchievement('Easter Egg Hunter', 'You found the secret!');
+      clickCount = 0; // Reset counter
+    } else if (clickCount === 1) {
+      showAchievement('Curious Explorer', 'You clicked the mysterious button!');
+    }
+  });
+
+  // Developer Joke
+  document.getElementById('devJoke').addEventListener('click', function() {
+    const answer = document.getElementById('jokeAnswer');
+    if (answer.style.display === 'block') {
+      answer.style.display = 'none';
+    } else {
+      answer.style.display = 'block';
+      showAchievement('Funny Bone', 'You enjoyed a developer joke!');
+    }
+  });
+
+  // Interactive Background
+  const interactiveBg = document.getElementById('interactiveBg');
+  
+  function createBackgroundElements() {
+    for (let i = 0; i < 20; i++) {
+      const element = document.createElement('div');
+      element.classList.add('bg-element');
+      element.style.left = Math.random() * 100 + 'vw';
+      element.style.top = Math.random() * 100 + 'vh';
+      element.style.width = (Math.random() * 20 + 5) + 'px';
+      element.style.height = element.style.width;
+      element.style.opacity = Math.random() * 0.3 + 0.1;
+      element.style.animation = `float ${Math.random() * 20 + 10}s infinite ease-in-out`;
+      interactiveBg.appendChild(element);
+    }
+  }
+  
+  // Fixed Floating Emojis - prevent overlapping
+  function createFloatingEmojis(count, originRect = null) {
+    const emojis = ['🎮', '👾', '💻', '🚀', '🎯', '⭐', '🔥', '💡'];
+    const usedPositions = [];
+    
+    for (let i = 0; i < count; i++) {
+      const emoji = document.createElement('div');
+      emoji.classList.add('emoji');
+      emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      
+      // Calculate position to avoid overlapping
+      let left, top;
+      let attempts = 0;
+      const maxAttempts = 20;
+      
+      do {
+        if (originRect) {
+          // Start from the button position
+          left = originRect.left + (Math.random() * 60 - 30);
+          top = originRect.top;
+        } else {
+          // Random position on screen
+          left = Math.random() * (window.innerWidth - 50);
+          top = window.innerHeight;
+        }
+        
+        attempts++;
+        
+        // Check if this position is too close to existing emojis
+        const tooClose = usedPositions.some(pos => {
+          const distance = Math.sqrt(Math.pow(pos.left - left, 2) + Math.pow(pos.top - top, 2));
+          return distance < 50; // Minimum distance between emojis
+        });
+        
+        if (!tooClose || attempts >= maxAttempts) {
+          usedPositions.push({ left, top });
+          break;
+        }
+      } while (attempts < maxAttempts);
+      
+      emoji.style.left = left + 'px';
+      emoji.style.top = top + 'px';
+      emoji.style.fontSize = (Math.random() * 10 + 20) + 'px';
+      
+      // Random animation duration
+      const duration = Math.random() * 2 + 2;
+      emoji.style.animationDuration = duration + 's';
+      
+      document.body.appendChild(emoji);
+      
+      // Remove emoji after animation
+      setTimeout(() => {
+        if (emoji.parentNode) {
+          emoji.parentNode.removeChild(emoji);
+        }
+      }, duration * 1000);
+    }
+  }
+
+  // Particle Effects
+  function createParticleExplosion(originRect) {
+    const particlesContainer = document.getElementById('particlesContainer');
+    const particleCount = 30;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Random size and color
+      const size = Math.random() * 10 + 5;
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
+      
+      // Random color from theme
+      const colors = [getComputedStyle(document.documentElement).getPropertyValue('--primary-color'), '#ff4081', '#00ff88', '#ff9800'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      // Start position
+      const startX = originRect.left + originRect.width / 2;
+      const startY = originRect.top + originRect.height / 2;
+      
+      particle.style.left = startX + 'px';
+      particle.style.top = startY + 'px';
+      
+      particlesContainer.appendChild(particle);
+      
+      // Animate particle
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 5 + 2;
+      const distance = Math.random() * 100 + 50;
+      
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+      
+      particle.animate([
+        { 
+          transform: 'translate(0, 0) scale(1)',
+          opacity: 1
+        },
+        { 
+          transform: `translate(${x}px, ${y}px) scale(0)`,
+          opacity: 0
+        }
+      ], {
+        duration: Math.random() * 1000 + 500,
+        easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+      });
+      
+      // Remove particle after animation
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      }, 1500);
+    }
+  }
+
+  // Achievement System
+  function showAchievement(title, description) {
+    const toast = document.getElementById('achievementToast');
+    const titleElement = document.getElementById('achievementTitle');
+    const descElement = document.getElementById('achievementDesc');
+    
+    titleElement.textContent = title;
+    descElement.textContent = description;
+    
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Initialize fun elements
+  createBackgroundElements();
+  
+  // Show welcome achievement after page loads
+  window.addEventListener('load', function() {
+    setTimeout(() => {
+      showAchievement('Welcome!', 'Thanks for visiting my portfolio!');
+    }, 1000);
+  });
+
+  // Add secret code detection
+  let konamiCode = [];
+  const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+  
+  document.addEventListener('keydown', function(e) {
+    konamiCode.push(e.code);
+    
+    // Keep only the last 10 keys
+    if (konamiCode.length > konamiSequence.length) {
+      konamiCode.shift();
+    }
+    
+    // Check if sequence matches
+    if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+      showAchievement('Konami Master!', 'You entered the secret code!');
+      createFloatingEmojis(20);
+      createParticleExplosion({left: window.innerWidth/2, top: window.innerHeight/2, width: 0, height: 0});
+      konamiCode = []; // Reset
+    }
+  });
+
+  // Mouse trail effect
+  document.addEventListener('mousemove', function(e) {
+    // Only create trail occasionally to avoid performance issues
+    if (Math.random() > 0.7) {
+      createMouseTrail(e.clientX, e.clientY);
+    }
+  });
+
+  function createMouseTrail(x, y) {
+    const trail = document.createElement('div');
+    trail.classList.add('particle');
+    
+    trail.style.width = '4px';
+    trail.style.height = '4px';
+    trail.style.background = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+    trail.style.borderRadius = '50%';
+    trail.style.position = 'fixed';
+    trail.style.left = x + 'px';
+    trail.style.top = y + 'px';
+    trail.style.pointerEvents = 'none';
+    trail.style.zIndex = '9998';
+    
+    document.body.appendChild(trail);
+    
+    // Animate trail
+    trail.animate([
+      { opacity: 0.7, transform: 'scale(1)' },
+      { opacity: 0, transform: 'scale(0)' }
+    ], {
+      duration: 500,
+      easing: 'ease-out'
+    });
+    
+    // Remove trail after animation
+    setTimeout(() => {
+      if (trail.parentNode) {
+        trail.parentNode.removeChild(trail);
+      }
+    }, 500);
+  }
+</script>
+</body>
+</html>
