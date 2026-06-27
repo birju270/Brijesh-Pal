@@ -592,6 +592,60 @@
       background-color: #ffc107;
       transform: translateY(-2px);
     }
+    .experience-container{
+    max-width:900px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+.experience-card{
+    display:flex;
+    gap:25px;
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-left:5px solid var(--primary-color);
+    border-radius:15px;
+    padding:25px;
+    transition:.3s;
+}
+
+.experience-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 10px 25px rgba(249,168,37,.2);
+}
+
+.experience-date{
+    min-width:160px;
+    color:var(--primary-color);
+    font-weight:600;
+}
+
+.experience-content h3{
+    color:var(--primary-color);
+    margin-bottom:5px;
+}
+
+.experience-content h4{
+    margin-bottom:15px;
+    opacity:.8;
+}
+
+.experience-content p{
+    margin-bottom:10px;
+    line-height:1.7;
+}
+
+@media(max-width:768px){
+    .experience-card{
+        flex-direction:column;
+    }
+
+    .experience-date{
+        min-width:auto;
+    }
+}
 
     /* Enhanced Portfolio Styles */
     .portfolio-container {
@@ -1342,6 +1396,89 @@
       </div>
     </div>
   </section>
+  <section id="experience">
+    <h2 class="section-title">WORK <span>EXPERIENCE</span></h2>
+
+    <div class="experience-container">
+
+        <div class="experience-card">
+            <div class="experience-date">
+                <span>Aug 2023 - Present</span>
+            </div>
+
+            <div class="experience-content">
+                <h3>Security Researcher (Bug Bounty Hunter)</h3>
+                <h4>Freelance</h4>
+
+                <p>
+                    • Reported security vulnerabilities in platforms including
+                    Truecaller, Filecoin, Upstox, Vivint and Life360.
+                </p>
+
+                <p>
+                    • Earned over <strong>$1000+</strong> through valid bug bounty submissions.
+                </p>
+
+                <p>
+                    • Identified API Key Exposure, Broken Access Control,
+                    Jira Misconfigurations and other web security issues.
+                </p>
+
+                <p>
+                    • Performed reconnaissance and security testing using
+                    Burp Suite, Nmap and Kali Linux.
+                </p>
+            </div>
+        </div>
+
+        <div class="experience-card">
+            <div class="experience-date">
+                <span>Jul 2024 - Present</span>
+            </div>
+
+            <div class="experience-content">
+                <h3>Unity Game Developer</h3>
+                <h4>Diksha Vision LLP</h4>
+
+                <p>
+                    • Developed real-time Unity applications and integrated APIs.
+                </p>
+
+                <p>
+                    • Improved debugging, application analysis and backend workflow understanding.
+                </p>
+
+                <p>
+                    • Built scalable game systems and optimized gameplay performance.
+                </p>
+            </div>
+        </div>
+
+        <div class="experience-card">
+            <div class="experience-date">
+                <span>Jan 2024 - Jun 2024</span>
+            </div>
+
+            <div class="experience-content">
+                <h3>Unity Game Developer</h3>
+                <h4>Universal Phoenix Group</h4>
+
+                <p>
+                    • Developed a 2D Puzzle Word Dictionary Game using Unity.
+                </p>
+
+                <p>
+                    • Implemented gameplay systems, UI and complete game logic.
+                </p>
+
+                <p>
+                    • Managed the project from development to playable prototype.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
 
   <section id="portfolio">
     <h2 class="section-title">MY <span>PROJECTS</span></h2>
